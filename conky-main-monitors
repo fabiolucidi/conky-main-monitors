@@ -1,0 +1,115 @@
+# **********************************************************************
+# "CPU Panel (8-core)" theme for Conky by Tony George (teejee2008@gmail.com)
+#
+# Webpage: http://teejeetech.blogspot.in/
+# **********************************************************************
+
+
+background yes
+double_buffer yes
+
+alignment top_right
+
+border_width 1
+cpu_avg_samples 2
+default_color white
+default_outline_color white
+default_shade_color white
+draw_borders no
+draw_graph_borders yes
+draw_outline no
+draw_shades no
+
+gap_x 30
+gap_y 50
+net_avg_samples 2
+no_buffers yes
+out_to_console no
+out_to_stderr no
+extra_newline no
+
+own_window yes
+own_window_type normal
+own_window_transparent yes
+own_window_colour 000000
+own_window_argb_visual yes
+own_window_argb_value 0
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+
+minimum_size 300 0
+stippled_borders 0
+update_interval 2.0
+uppercase no
+use_spacer none
+
+show_graph_scale no
+show_graph_range no
+
+use_xft yes
+xftalpha 0.1
+xftfont Droid Sans:size=10
+color0 white
+color1 EAEAEA
+color2 FFA300
+color3 grey
+
+TEXT
+${voffset 0}${color2}${font GE Inspira:bold:size=16}$nodename
+${font Ubuntu:size=10}${color}kernel version: ${alignr}$kernel
+${color0}uptime: ${alignr}$uptime
+${color}battery perc/temp: ${alignr}${battery_percent BAT0}% / ${acpitemp}°C
+${color}battery (remaining): ${alignr}$battery_time
+
+${color2}${font GE Inspira:bold:size=12}CPU ${color0}${alignr}${cpu cpu0}%
+${cpubar cpu0 5,}${voffset -10}
+${font Ubuntu:size=10}${cpugraph cpu0 100,300}${voffset 0}
+${cpugraph cpu1 50,150}${cpugraph cpu2 50,150}${voffset -10}
+${cpugraph cpu3 50,150}${cpugraph cpu4 50,150}
+${font Ubuntu:size=10}${voffset -110}${color3}${goto 10}1 ${goto 160}2 ${goto 0} ${voffset 55} ${goto 10}3 ${goto 160}4
+${font Ubuntu:size=8}${voffset -70}${color3}${goto 108}${freq_g (1)}GHz ${goto 258}${freq_g (2)}GHz ${goto 0}${voffset 55}${goto 108}${freq_g (3)}GHz ${goto 258}${freq_g (4)}GHz ${voffset 40}
+
+${color2}${font GE Inspira:bold:size=12}Processes ${color0}
+${font Ubuntu:size=10}${top name 1} $alignr ${top cpu 1}%
+${top name 2} $alignr ${top cpu 2}%
+${top name 3} $alignr ${top cpu 3}%
+${top name 4} $alignr ${top cpu 4}%
+${top name 5} $alignr ${top cpu 5}%
+
+${color2}${font GE Inspira:bold:size=12}RAM ${color0}${alignr}${mem}
+${font Ubuntu:size=10}${membar 5,}
+${top_mem name 1} $alignr ${top_mem mem_res 1}
+${top_mem name 2} $alignr ${top_mem mem_res 2}
+${top_mem name 3} $alignr ${top_mem mem_res 3}
+${top_mem name 4} $alignr ${top_mem mem_res 4}
+${top_mem name 5} $alignr ${top_mem mem_res 5}
+
+${color2}${font GE Inspira:bold:size=12}Resources
+${font Ubuntu:size=10}${color}ram: ${mem} / ${memmax} ${alignr} ${memperc}%
+${color}swap: ${swap} / ${swapmax} ${alignr} ${swapperc}%
+${color}root: ${fs_used /} / ${fs_size /} ${alignr} ${fs_used_perc /}%
+${color}arch: ${fs_used /media/ColdArch} / ${fs_size /media/ColdArch} ${alignr} ${fs_used_perc /media/ColdArch}%
+# ${color3}${font Ubuntu:size=10}${hr}
+${color3}blockchain: ${alignr}${execpi 3600 du -sh /media/ColdArch/Blockchain | cut -c 1-2}GiB
+${color3}home: ${alignr}${execpi 3600 du -sh /home/fabio | cut -c 1-3}GiB
+
+${color2}${font GE Inspira:bold:size=12}Network${if_existing /sys/class/net/wlp1s0/operstate up}
+${font Ubuntu:size=10}${color0}signal ${alignr}${wireless_link_qual_perc wlp1s0}%
+${color0}down speed ${color0}${alignr}${downspeedf wlp1s0} KiB/s
+${color3}total down ${color3}${alignr}${totaldown wlp1s0}
+${downspeedgraph wlp1s0 50,300 EAEAEA FFA300t}
+${color0}up speed ${color0}${alignr}${upspeedf wlp1s0} KiB/s 
+${color3}total up ${color3}${alignr}${totalup wlp1s0}
+${upspeedgraph wlp1s0 50,300 FFA300 EAEAEA t} 
+${color}gateway IP: ${color0}${alignr}${gw_ip}
+${color0}local${color0}${alignr}${addr wlp1s0}
+${color0}public${color2}${alignr}${execi 3600 wget -q -O /dev/stdout http://checkip.dyndns.org/ | cut -d : -f 2- | cut -d \< -f -1}${else}
+${font Ubuntu:size=10}${color0}down speed ${color0}${alignr}${downspeedf enx000ec6fd4113} KiB/s
+${color3}total down ${color3}${alignr}${totaldown enx000ec6fd4113}
+${downspeedgraph wlp1s0 50,300 EAEAEA FFA300t}
+${color0}up speed ${color0}${alignr}${upspeedf enx000ec6fd4113} KiB/s 
+${color3}total up ${color3}${alignr}${totalup enx000ec6fd4113}
+${upspeedgraph wlp1s0 50,300 FFA300 EAEAEA t} 
+${color}gateway IP: ${color0}${alignr}${gw_ip}
+${color0}local${color0}${alignr}${addr enx000ec6fd4113}
+${color0}public${color2}${alignr}${execi 3600 wget -q -O /dev/stdout http://checkip.dyndns.org/ | cut -d : -f 2- | cut -d \< -f -1}
+${endif}
