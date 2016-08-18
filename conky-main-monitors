@@ -29,7 +29,7 @@ out_to_stderr no
 extra_newline no
 
 own_window yes
-own_window_type normal
+own_window_type desktop
 own_window_transparent yes
 own_window_colour 000000
 own_window_argb_visual yes
@@ -55,14 +55,17 @@ color3 grey
 
 TEXT
 ${voffset 0}${color2}${font GE Inspira:bold:size=16}$nodename
-${font Ubuntu:size=10}${color}kernel version: ${alignr}$kernel
-${color0}uptime: ${alignr}$uptime
-${color}battery perc/temp: ${alignr}${battery_percent BAT0}% / ${acpitemp}°C
-${color}battery (remaining): ${alignr}$battery_time
+${font Ubuntu:size=10}${color}kernel version ${alignr}$kernel
+${color0}uptime ${alignr}$uptime
+${color}system temp ${alignr}${acpitemp}°C
+${color}battery time ${alignr}${color}$battery_time
+${color}btc/eur ${alignr}${color3}${texeci 120 curl https://api.bitcoinaverage.com/ticker/global/EUR/last}
+#${color}btc/eur ${alignr}${color3}${texeci 120 curl http://apiv2.bitcoinaverage.com/indices/global/EUR}
+#https://apiv2.bitcoinaverage.com/convert/global/crypto?from=BTC&to=EUR&amount=1
 
 ${color2}${font GE Inspira:bold:size=12}CPU ${color0}${alignr}${cpu cpu0}%
-${cpubar cpu0 5,}${voffset -10}
-${font Ubuntu:size=10}${cpugraph cpu0 100,300}${voffset 0}
+${color0}${cpubar cpu0 5,300}${voffset -10}
+${color0}${font Ubuntu:size=10}${cpugraph cpu0 100,300}${voffset 0}
 ${cpugraph cpu1 50,150}${cpugraph cpu2 50,150}${voffset -10}
 ${cpugraph cpu3 50,150}${cpugraph cpu4 50,150}
 ${font Ubuntu:size=10}${voffset -110}${color3}${goto 10}1 ${goto 160}2 ${goto 0} ${voffset 55} ${goto 10}3 ${goto 160}4
@@ -89,27 +92,23 @@ ${color}swap: ${swap} / ${swapmax} ${alignr} ${swapperc}%
 ${color}root: ${fs_used /} / ${fs_size /} ${alignr} ${fs_used_perc /}%
 ${color}arch: ${fs_used /media/ColdArch} / ${fs_size /media/ColdArch} ${alignr} ${fs_used_perc /media/ColdArch}%
 # ${color3}${font Ubuntu:size=10}${hr}
-${color3}blockchain: ${alignr}${execpi 3600 du -sh /media/ColdArch/Blockchain | cut -c 1-2}GiB
-${color3}home: ${alignr}${execpi 3600 du -sh /home/fabio | cut -c 1-3}GiB
+${color3}blockchain ${alignr}${execpi 3600 du -sh /media/ColdArch/Blockchain | cut -c 1-2}GiB
+${color3}home ${alignr}${execpi 3600 du -sh /home/fabio | cut -c 1-3}GiB
 
 ${color2}${font GE Inspira:bold:size=12}Network${if_existing /sys/class/net/wlp1s0/operstate up}
 ${font Ubuntu:size=10}${color0}signal ${alignr}${wireless_link_qual_perc wlp1s0}%
 ${color0}down speed ${color0}${alignr}${downspeedf wlp1s0} KiB/s
 ${color3}total down ${color3}${alignr}${totaldown wlp1s0}
-${downspeedgraph wlp1s0 50,300 EAEAEA FFA300t}
+${downspeedgraph wlp1s0 50,300 EAEAEA FFA300 -l -t}
 ${color0}up speed ${color0}${alignr}${upspeedf wlp1s0} KiB/s 
 ${color3}total up ${color3}${alignr}${totalup wlp1s0}
-${upspeedgraph wlp1s0 50,300 FFA300 EAEAEA t} 
-${color}gateway IP: ${color0}${alignr}${gw_ip}
-${color0}local${color0}${alignr}${addr wlp1s0}
-${color0}public${color2}${alignr}${execi 3600 wget -q -O /dev/stdout http://checkip.dyndns.org/ | cut -d : -f 2- | cut -d \< -f -1}${else}
-${font Ubuntu:size=10}${color0}down speed ${color0}${alignr}${downspeedf enx000ec6fd4113} KiB/s
+${upspeedgraph wlp1s0 50,300 FFA300 EAEAEA -l -t} 
+${color0}local${color0}${alignr}${addr wlp1s0}${else}${font Ubuntu:size=10}${color0}down speed ${color0}${alignr}${downspeedf enx000ec6fd4113} KiB/s
 ${color3}total down ${color3}${alignr}${totaldown enx000ec6fd4113}
-${downspeedgraph wlp1s0 50,300 EAEAEA FFA300t}
+${downspeedgraph enx000ec6fd4113 50,300 EAEAEA FFA300 -l -t}
 ${color0}up speed ${color0}${alignr}${upspeedf enx000ec6fd4113} KiB/s 
 ${color3}total up ${color3}${alignr}${totalup enx000ec6fd4113}
-${upspeedgraph wlp1s0 50,300 FFA300 EAEAEA t} 
-${color}gateway IP: ${color0}${alignr}${gw_ip}
-${color0}local${color0}${alignr}${addr enx000ec6fd4113}
-${color0}public${color2}${alignr}${execi 3600 wget -q -O /dev/stdout http://checkip.dyndns.org/ | cut -d : -f 2- | cut -d \< -f -1}
-${endif}
+${upspeedgraph enx000ec6fd4113 50,300 FFA300 EAEAEA -l -t} 
+${color0}local${color0}${alignr}${addr enx000ec6fd4113}${endif}
+${color}gateway${color0}${alignr}${gw_ip}
+${color0}public${color2}${alignr}${execi 3600 sh ~/.conky/ip.sh}
